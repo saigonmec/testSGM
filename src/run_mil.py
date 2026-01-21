@@ -108,7 +108,7 @@ def run_predictions(
 
             if arch_type is None or str(arch_type).lower() == "based":
                 img = safe_convert_to_rgb(Image.open(img_path))
-                preprocess = build_preprocess(tuple(input_size), num_patches)
+                preprocess = build_preprocess(tuple(input_size), normalize)
 
                 x = preprocess(img).to(dev)
 
