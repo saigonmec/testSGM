@@ -13,6 +13,7 @@ from src.engines import evaluate_model
 
 import re
 import matplotlib.pyplot as plt
+from torch import nn
 
 VIEW_ORDER = [("CC", "R"), ("CC", "L"), ("MLO", "R"), ("MLO", "L")]
 SAVE_GRADCAM = False
