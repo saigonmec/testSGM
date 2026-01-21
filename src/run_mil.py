@@ -18,6 +18,7 @@ from src.processing import (
     predict_binary_label_and_confidence,
     gradcam_heatmap_based,
     overlay_otsu,
+    _longest_common_substring,  # Thêm import này ở đầu file nếu chưa có
 )
 from src.utils import print_stats
 from src.plot import parse_bbxs_from_string, draw_bboxes_on_image
@@ -339,7 +340,16 @@ def main(
 
     # In bảng tổng hợp nếu có nhiều hơn 1 model
     if len(pretrained_model_paths) > 1:
-        print_summary_table(all_results)
+        # Rút gọn tên model
+        model_names = list(all_results.keys())
+        common = _longest_common_substring(model_names)
+        short_names = [m.replace(common, "") if common else m for m in model_names]
+        short_results = {
+            short: all_results[orig] for short, orig in zip(short_names, model_names)
+        }
+        print_summary_table(short_results)
+        if common:
+            print(f"\nCommon part in model names: '{common}'")
 
     print("\n" + "=" * 60)
     print("HOÀN THÀNH WORKFLOW")

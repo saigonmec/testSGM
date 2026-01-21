@@ -526,3 +526,32 @@ def viz_sgm_predict(root_folder: str, figsize=(18, 5), compare: bool = False) ->
 
             plt.tight_layout()
             plt.show()
+
+
+def _longest_common_substring(strs: list[str]) -> str:
+    if not strs:
+        return ""
+    s1 = min(strs, key=len)
+    s2 = max(strs, key=len)
+    maxlen = 0
+    common = ""
+    for i in range(len(s1)):
+        for j in range(i + 1, len(s1) + 1):
+            candidate = s1[i:j]
+            if candidate and all(candidate in s for s in strs):
+                if len(candidate) > maxlen:
+                    maxlen = len(candidate)
+                    common = candidate
+    return common
+
+
+def print_model_table_with_common(models: list[str], rows: list[list[str]]):
+    common = _longest_common_substring(models)
+    short_models = [m.replace(common, "") if common else m for m in models]
+    # In bảng với short_models
+    print("| " + " | ".join(short_models) + " |")
+    print("|" + "|".join(["---"] * len(short_models)) + "|")
+    for row in rows:
+        print("| " + " | ".join(row) + " |")
+    if common:
+        print(f"\nCommon part in model names: '{common}'")
