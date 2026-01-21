@@ -359,13 +359,11 @@ def main(
 
 def _strip_model_name(name: str) -> str:
     parts = name.split("_")
-    # Loại bỏ prefix: bỏ tất cả các phần trước phần đầu tiên chứa số (thường là tên model version)
-    prefix_idx = 0
-    for i, p in enumerate(parts):
-        if any(c.isdigit() for c in p):
-            prefix_idx = i
-            break
-    parts = parts[prefix_idx:]
+    # Bỏ phần tử đầu và phần tử thứ 2 (nếu có)
+    if len(parts) > 2:
+        parts = parts[2:]
+    elif len(parts) > 1:
+        parts = parts[1:]
     # Loại bỏ suffix 'full' nếu có
     if parts and parts[-1].lower() == "full":
         parts = parts[:-1]
