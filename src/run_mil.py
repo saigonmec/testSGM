@@ -311,6 +311,7 @@ def main(
 
         # Load model info để lấy tên
         _, input_size, model_name, _, _, _, _ = load_full_model(model_path)
+        print("[INFO] Model input size:", input_size, "Model name:", model_name)
         model_display_name = (
             f"{model_name}_{input_size[0]}x{input_size[1]}"
             if model_name
