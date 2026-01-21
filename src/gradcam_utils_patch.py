@@ -177,6 +177,8 @@ def pre_mil_gradcam(
 
     # Predict class probabilities
     with torch.no_grad():
+        device = next(model.parameters()).device
+        input_tensor = input_tensor.to(device)
         output = model(input_tensor)
         probs = torch.softmax(output, dim=1).cpu().numpy()[0]
         # If class_idx is not specified, use the highest predicted class
