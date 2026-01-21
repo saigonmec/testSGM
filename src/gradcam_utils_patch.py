@@ -219,16 +219,16 @@ def mil_gradcam(
 
     num_input_patches = input_tensor.shape[1] if input_tensor.dim() == 5 else 1
 
-    print(f"\n{'=' * 60}")
-    print(f"DEBUG mil_gradcam:")
-    print(f"  Input patches: {num_input_patches}")
-    print(f"  Captured {len(activations_list)} activation groups")
+    # print(f"\n{'=' * 60}")
+    # print(f"DEBUG mil_gradcam:")
+    # print(f"  Input patches: {num_input_patches}")
+    # print(f"  Captured {len(activations_list)} activation groups")
 
     # Concatenate all activations and gradients from multiple forward passes
     all_acts = []
     all_grads = []
     for acts, grads in zip(activations_list, gradients_list):
-        print(f"  Act shape: {acts.shape}, Grad shape: {grads.shape}")
+        # print(f"  Act shape: {acts.shape}, Grad shape: {grads.shape}")
         # If 4D [B, C, H, W], treat as [B, C, H, W] where B=num_patches
         if acts.dim() == 4:
             all_acts.append(acts)
