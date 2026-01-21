@@ -43,6 +43,10 @@ def load_full_model(
     normalize = checkpoint.get("normalize", None)
     num_patches = checkpoint.get("num_patches", None)
     arch_type = checkpoint.get("arch_type", None)
+    print(f"[load_full_model] Loaded model from {model_path}")
+    print(f"[load_full_model] Model input size: {input_size}, Model name: {model_name}")
+    print(f"[load_full_model] GradCAM layer: {gradcam_layer}, Normalize: {normalize}")
+    print(f"[load_full_model] Num patches: {num_patches}, Arch type: {arch_type}")
 
     return (
         model,
