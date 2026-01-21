@@ -315,7 +315,7 @@ def main(
         _, input_size, model_name, _, _, _, _ = load_full_model(model_path)
         print("[INFO] Model input size:", input_size, "Model name:", model_name)
         model_display_name = (
-            f"{model_name}_{input_size[0]}x{input_size[1]}"
+            f"{model_name}_{input_size[0]}x{input_size[1]}_{Path(model_path).stem}"
             if model_name
             else f"Model{idx}"
         )
