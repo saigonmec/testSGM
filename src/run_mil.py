@@ -110,7 +110,9 @@ def run_predictions(
                 img = safe_convert_to_rgb(Image.open(img_path))
                 preprocess = build_preprocess(tuple(input_size), normalize)
 
-                x = preprocess(img).to(dev)
+                # x = preprocess(img).to(dev)
+                x = preprocess(img).unsqueeze(0).to(dev)
+                # x.shape sẽ là [1, C, H, W]
 
                 with torch.no_grad():
                     logits = model(x)
