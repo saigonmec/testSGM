@@ -27,6 +27,42 @@ GRADCAM_RE = re.compile(
 # ===== Your original loader (kept) =====
 def load_full_model(
     model_path: str,
+) -> tuple[
+    nn.Module,
+    tuple[int, int],
+    str | None,
+    str | None,
+    dict[str, list[float]] | None,
+    int | None,
+    str | None,
+]:
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Model checkpoint not found at {model_path}")
+
+    checkpoint = torch.load(model_path, map_location="cpu", weights_only=False)
+    model = checkpoint["model"]
+    model.eval()
+
+    input_size = checkpoint.get("input_size", (448, 448))
+    model_name = checkpoint.get("model_name", None)
+    gradcam_layer = checkpoint.get("gradcam_layer", None)
+    normalize = checkpoint.get("normalize", None)
+    num_patches = checkpoint.get("num_patches", None)
+    arch_type = checkpoint.get("arch_type", None)
+
+    return (
+        model,
+        input_size,
+        model_name,
+        gradcam_layer,
+        normalize,
+        num_patches,
+        arch_type,
+    )
+
+
+def load_full_model2(
+    model_path: str,
 ):
     from torch import nn  # local import for typing compatibility
 
