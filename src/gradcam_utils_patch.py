@@ -241,7 +241,7 @@ def mil_gradcam(
     if len(all_acts) > 1:
         acts = torch.cat(all_acts, dim=0)  # [total_patches, C, H, W]
         grads = torch.cat(all_grads, dim=0)
-        print(f"  Concatenated: acts {acts.shape}, grads {grads.shape}")
+        # print(f"  Concatenated: acts {acts.shape}, grads {grads.shape}")
     else:
         acts = all_acts[0]
         grads = all_grads[0]
@@ -252,12 +252,11 @@ def mil_gradcam(
         repeats_needed = num_input_patches - acts.shape[0]
         acts = torch.cat([acts] + [acts[-1:]] * repeats_needed, dim=0)
         grads = torch.cat([grads] + [grads[-1:]] * repeats_needed, dim=0)
-        print(f"  Padded to {num_input_patches} patches")
+        # print(f"  Padded to {num_input_patches} patches")
     elif acts.shape[0] > num_input_patches:
         acts = acts[:num_input_patches]
         grads = grads[:num_input_patches]
-        print(f"  Truncated to {num_input_patches} patches")
-
+        # print(f"  Truncated to {num_input_patches} patches")
     # Compute CAM for each patch
     cams = []
     for i in range(num_input_patches):
@@ -269,8 +268,8 @@ def mil_gradcam(
         cams.append(cam)
     cam = torch.stack(cams, dim=0)  # [N, H, W]
 
-    print(f"  Output CAM shape: {cam.shape}")
-    print(f"{'=' * 60}\n")
+    # print(f"  Output CAM shape: {cam.shape}")
+    # print(f"{'=' * 60}\n")
 
     # Normalize
     cam = cam.cpu().numpy()
