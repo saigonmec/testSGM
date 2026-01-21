@@ -340,10 +340,11 @@ def main(
 
     # In bảng tổng hợp nếu có nhiều hơn 1 model
     if len(pretrained_model_paths) > 1:
-        # Rút gọn tên model
         model_names = list(all_results.keys())
-        common = _longest_common_substring(model_names)
-        short_names = [m.replace(common, "") if common else m for m in model_names]
+        # Loại bỏ prefix/suffix trước khi tìm phần chung
+        stripped_names = [_strip_model_name(m) for m in model_names]
+        common = _longest_common_substring(stripped_names)
+        short_names = [m.replace(common, "") if common else m for m in stripped_names]
         short_results = {
             short: all_results[orig] for short, orig in zip(short_names, model_names)
         }
@@ -354,6 +355,21 @@ def main(
     print("\n" + "=" * 60)
     print("HOÀN THÀNH WORKFLOW")
     print("=" * 60 + "\n")
+
+
+def _strip_model_name(name: str) -> str:
+    parts = name.split("_")
+    # Loại bỏ prefix: bỏ tất cả các phần trước phần đầu tiên chứa số (thường là tên model version)
+    prefix_idx = 0
+    for i, p in enumerate(parts):
+        if any(c.isdigit() for c in p):
+            prefix_idx = i
+            break
+    parts = parts[prefix_idx:]
+    # Loại bỏ suffix 'full' nếu có
+    if parts and parts[-1].lower() == "full":
+        parts = parts[:-1]
+    return "_".join(parts)
 
 
 if __name__ == "__main__":
