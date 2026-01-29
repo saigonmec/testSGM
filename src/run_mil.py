@@ -118,8 +118,8 @@ def run_predictions(
                 with torch.no_grad():
                     logits = model(x)
 
-                label, conf, _ = predict_binary_label_and_confidence(logits)
-                predictions_map[img_path_str] = (label, conf)
+                label, conf, p1 = predict_binary_label_and_confidence(logits)
+                predictions_map[img_path_str] = (label, p1)
 
                 out_row = row.copy()
                 out_row["predict"] = str(label)
