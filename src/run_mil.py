@@ -117,9 +117,9 @@ def run_predictions(
 
                 with torch.no_grad():
                     logits = model(x)
-                    #print(
+                    # print(
                     #    f"logits for {img_path}: {logits.cpu().numpy()}"
-                    #)  # In ra logits
+                    # )  # In ra logits
 
                 label, conf, p1 = predict_binary_label_and_confidence(logits)
                 predictions_map[img_path_str] = (label, p1)
@@ -181,9 +181,9 @@ def run_predictions(
                     p1,
                 ) = pre_mil_gradcam(model_tuple, str(img_path))
 
-                #print(
+                # print(
                 #    f"logits (MIL) for {img_path}: {model_out.cpu()}"
-                )  # In ra logits MIL
+                # )  # In ra logits MIL
 
                 input_tensor = input_tensor.to(dev)
                 model_out = model_out.to(dev)
