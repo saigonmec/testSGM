@@ -194,7 +194,7 @@ def overlay_otsu(
     return img_out
 
 
-def predict_binary_label_and_confidence(
+def predict_binary_label_and_confidence_ori(
     logits: torch.Tensor,
 ) -> Tuple[int, float, float]:
     if logits.ndim == 1:
@@ -209,6 +209,23 @@ def predict_binary_label_and_confidence(
     label = 1 if p1 >= 0.5 else 0
     conf = p1 if label == 1 else (1 - p1)
     return label, float(conf), float(p1)
+
+
+def predict_binary_label_and_confidence(logits):
+    """
+    Dự đoán nhãn nhị phân và trả về:
+    - label: 0 hoặc 1 (class dự đoán)
+    - conf: độ tự tin với nhãn dự đoán (>=0.5)
+    - p1: xác suất class 1 (dùng cho AUC)
+    """
+    import torch
+
+    # logits shape: [1, 2]
+    probs = torch.softmax(logits, dim=1).cpu().numpy()[0]
+    p1 = probs[1]  # Xác suất class 1
+    label = int(p1 >= 0.5)
+    conf = p1 if label == 1 else (1 - p1)
+    return label, conf, p1
 
 
 def SGMpredict_folder(
