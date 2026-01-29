@@ -117,6 +117,9 @@ def run_predictions(
 
                 with torch.no_grad():
                     logits = model(x)
+                    print(
+                        f"logits for {img_path}: {logits.cpu().numpy()}"
+                    )  # In ra logits
 
                 label, conf, p1 = predict_binary_label_and_confidence(logits)
                 predictions_map[img_path_str] = (label, p1)
@@ -177,11 +180,20 @@ def run_predictions(
                     prob0,
                 ) = pre_mil_gradcam(model_tuple, str(img_path))
 
+                print(
+                    f"logits (MIL) for {img_path}: {model_out.cpu().numpy()}"
+                )  # In ra logits MIL
+
                 input_tensor = input_tensor.to(dev)
                 model_out = model_out.to(dev)
 
-                label, conf = pred_class0, prob0
-                predictions_map[img_path_str] = (label, conf)
+                # label, conf = pred_class0, prob0
+                # predictions_map[img_path_str] = (label, conf)
+
+                label = pred_class0
+                p1 = prob0  # Giả sử prob0 là prob positive (p1); nếu prob0 là conf, thay bằng: p1 = prob0 if label == 1 else (1 - prob0)
+                conf = p1 if label == 1 else (1 - p1)  # Tính conf từ p1 để nhất quán
+                predictions_map[img_path_str] = (label, p1)  # Luôn lưu p1 cho AUC đúng
 
                 out_row = row.copy()
                 out_row["predict"] = str(label)
