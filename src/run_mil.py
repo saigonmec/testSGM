@@ -181,7 +181,7 @@ def run_predictions(
                 ) = pre_mil_gradcam(model_tuple, str(img_path))
 
                 print(
-                    f"logits (MIL) for {img_path}: {model_out.cpu().numpy()}"
+                    f"logits (MIL) for {img_path}: {model_out.cpu()}"
                 )  # In ra logits MIL
 
                 input_tensor = input_tensor.to(dev)
