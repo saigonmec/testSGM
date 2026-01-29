@@ -186,8 +186,9 @@ def pre_mil_gradcam(
             class_idx if class_idx is not None else int(output.argmax(dim=1).item())
         )
         pred_prob = probs[pred_class]
+        p1 = probs[1]
 
-    return model, input_tensor, img, target_layer, class_idx, pred_class, pred_prob
+    return model, input_tensor, img, target_layer, class_idx, pred_class, pred_prob, p1
 
 
 def mil_gradcam(

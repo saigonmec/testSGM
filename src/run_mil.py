@@ -178,6 +178,7 @@ def run_predictions(
                     class_idx0,
                     pred_class0,
                     prob0,
+                    p1,
                 ) = pre_mil_gradcam(model_tuple, str(img_path))
 
                 print(
@@ -187,12 +188,8 @@ def run_predictions(
                 input_tensor = input_tensor.to(dev)
                 model_out = model_out.to(dev)
 
-                # label, conf = pred_class0, prob0
+                label, conf = pred_class0, prob0
                 # predictions_map[img_path_str] = (label, conf)
-
-                label = pred_class0
-                p1 = prob0  # Giả sử prob0 là prob positive (p1); nếu prob0 là conf, thay bằng: p1 = prob0 if label == 1 else (1 - prob0)
-                conf = p1 if label == 1 else (1 - p1)  # Tính conf từ p1 để nhất quán
                 predictions_map[img_path_str] = (label, p1)  # Luôn lưu p1 cho AUC đúng
 
                 out_row = row.copy()
